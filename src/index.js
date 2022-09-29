@@ -1,6 +1,13 @@
 const URL = 'http://localhost:3000/characters';
+
 const form = document.getElementById('votes-form');
 form.addEventListener('submit', newVoteForm)
+
+const resetBtn = document.getElementById('reset-btn');
+resetBtn.addEventListener('click', resetVoteDisplay)
+
+const newCharForm = document.getElementById('character-form');
+newCharForm.addEventListener('submit', createNewChar);
 
 fetch(URL)
     .then(res => res.json())
@@ -35,4 +42,29 @@ function newVoteForm(e) {
     const voteDisplay = document.getElementById('vote-count');
     voteDisplay.textContent = parseInt(voteDisplay.textContent) + parseInt(votes);
     form.reset();
+}
+
+function resetVoteDisplay(e) {
+    const voteDisplay = document.getElementById('vote-count');
+    voteDisplay.textContent = 0;
+}
+
+function createNewChar(e) {
+    e.preventDefault();
+    const newChar = {
+        name: e.target.name.value,
+        image: e.target['image-url'].value,
+        votes: 0
+    }
+
+    const nameDisplay = document.getElementById('name');
+    const imgDisplay = document.getElementById('image');
+    const voteDisplay = document.getElementById('vote-count');
+
+    nameDisplay.textContent = newChar.name;
+    imgDisplay.src = newChar.image;
+    voteDisplay.textContent = newChar.votes;
+
+    renderChar(newChar);
+    newCharForm.reset();
 }
